@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fehler 143 ❤️</title>
+<style>
+  /* Grundstil */
+  * {margin:0; padding:0; box-sizing:border-box;}
+  body, html {
+    width: 100%;
+    height: 100%;
+    font-family: 'Helvetica Neue', sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  /* Container */
+  .container {
+    text-align: center;
+    max-width: 600px;
+    padding: 2rem;
+  }
+
+  /* Terminal/Fehler-Text */
+  .error-text {
+    font-family: monospace;
+    font-size: 1.5rem;
+    color: #ccc;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+  }
+  .hidden {opacity:0;}
+
+  /* Herz-Animation */
+  .heart {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: url('HEART_PLACEHOLDER.png') no-repeat center center;
+    background-size: contain;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 1s ease-in-out;
+    z-index: 10;
+  }
+  .heart.show {
+    transform: translate(-50%, -50%) scale(1.2);
+    animation: heartbeat 1s infinite alternate;
+  }
+
+  @keyframes heartbeat {
+    0% { transform: translate(-50%, -50%) scale(1.1);}
+    100% { transform: translate(-50%, -50%) scale(1.3);}
+  }
+
+  /* Liebesbotschaft */
+  .message {
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    color: #ffccd5;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+  }
+  .message.show {opacity:1;}
+
+  /* Herz-Partikel */
+  .particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ff6b81;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: floatUp 5s linear infinite;
+  }
+  @keyframes floatUp {
+    0% {transform: translateY(0) scale(0);}
+    50% {transform: translateY(-200px) scale(1);}
+    100% {transform: translateY(-400px) scale(0);}
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="error-text" id="errorText">Fehler 143. That’s an error.</div>
+  <div class="error-text hidden" id="decodeText">Attempting automatic recovery...</div>
+  <div class="error-text hidden" id="codeText">Decoding error code: 143</div>
+  <div class="error-text hidden" id="hintText">Hint: This one is for you ❤️</div>
+  <div class="message" id="loveMessage">
+    Ich liebe dich so sehr!<br>
+    Mehr als Worte je ausdrücken könnten.<br>
+    💖💖💖
+  </div>
+</div>
+
+<div class="heart" id="heart"></div>
+
+<script>
+  const errorText = document.getElementById('errorText');
+  const decodeText = document.getElementById('decodeText');
+  const codeText = document.getElementById('codeText');
+  const hintText = document.getElementById('hintText');
+  const loveMessage = document.getElementById('loveMessage');
+  const heart = document.getElementById('heart');
+
+  // Schrittweise Textanimation
+  setTimeout(() => { errorText.classList.add('hidden'); decodeText.classList.remove('hidden'); }, 2000);
+  setTimeout(() => { decodeText.classList.add('hidden'); codeText.classList.remove('hidden'); }, 4000);
+  setTimeout(() => { codeText.classList.add('hidden'); hintText.classList.remove('hidden'); }, 6000);
+  setTimeout(() => { hintText.classList.add('hidden'); loveMessage.classList.add('show'); heart.classList.add('show'); generateParticles(); }, 8000);
+
+  // Herz-Partikel erzeugen
+  function generateParticles() {
+    for(let i=0;i<30;i++){
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      p.style.left = (Math.random()*100)+'%';
+      p.style.animationDuration = (3+Math.random()*3)+'s';
+      p.style.width = (5+Math.random()*10)+'px';
+      p.style.height = p.style.width;
+      document.body.appendChild(p);
+    }
+  }
+</script>
+
+</body>
+</html>
