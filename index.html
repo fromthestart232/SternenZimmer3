@@ -4,132 +4,276 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fehler 143 ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
-  /* Grundstil */
-  * {margin:0; padding:0; box-sizing:border-box;}
-  body, html {
-    width: 100%;
-    height: 100%;
-    font-family: 'Helvetica Neue', sans-serif;
-    background: #0a0a0a;
-    color: #fff;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
+* {margin:0; padding:0; box-sizing:border-box;}
 
-  /* Container */
-  .container {
-    text-align: center;
-    max-width: 600px;
-    padding: 2rem;
-  }
+body {
+  background: radial-gradient(circle at center, #0a0010 0%, #050505 100%);
+  font-family: 'JetBrains Mono', monospace;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
 
-  /* Terminal/Fehler-Text */
-  .error-text {
-    font-family: monospace;
-    font-size: 1.5rem;
-    color: #ccc;
-    opacity: 1;
-    transition: opacity 1s ease-in-out;
-  }
-  .hidden {opacity:0;}
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(255,105,180,0.3);
+  border-radius: 50%;
+  animation: floatUp 6s linear infinite;
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0.5); opacity:0.3; }
+  50% { opacity:0.6; }
+  100% { transform: translateY(-50px) scale(1); opacity:0; }
+}
 
-  /* Herz-Animation */
-  .heart {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background: url('HEART_PLACEHOLDER.png') no-repeat center center;
-    background-size: contain;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 1s ease-in-out;
-    z-index: 10;
-  }
-  .heart.show {
-    transform: translate(-50%, -50%) scale(1.2);
-    animation: heartbeat 1s infinite alternate;
-  }
+.terminal {
+  width: 90%;
+  max-width: 820px;
+  min-height: 200px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: rgba(10,0,16,0.95);
+  border-radius: 10px;
+  box-shadow: 0 0 50px rgba(255,105,180,0.2);
+  padding: 20px;
+  border: 1px solid rgba(255,105,180,0.3);
+  transition: height 0.5s ease;
+  position: relative;
+  z-index: 2;
+}
 
-  @keyframes heartbeat {
-    0% { transform: translate(-50%, -50%) scale(1.1);}
-    100% { transform: translate(-50%, -50%) scale(1.3);}
-  }
+.bg-terminal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 90%;
+  max-width: 820px;
+  height: 80%;
+  background: rgba(0,0,0,0.3); /* leicht transparent */
+  border-radius: 10px;
+  padding: 20px;
+  overflow: hidden;
+  z-index: 1; /* unter dem Haupt-Terminal */
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(0,255,150,0.2);
+  font-size: 14px;
+}
 
-  /* Liebesbotschaft */
-  .message {
-    font-size: 1.8rem;
-    margin-top: 2rem;
-    color: #ffccd5;
-    opacity: 0;
-    transition: opacity 2s ease-in-out;
-  }
-  .message.show {opacity:1;}
+.terminal:hover .cursor::after {
+  animation: blink 0.5s infinite, typingPulse 0.8s infinite;
+}
 
-  /* Herz-Partikel */
-  .particle {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: #ff6b81;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: floatUp 5s linear infinite;
-  }
-  @keyframes floatUp {
-    0% {transform: translateY(0) scale(0);}
-    50% {transform: translateY(-200px) scale(1);}
-    100% {transform: translateY(-400px) scale(0);}
-  }
+.terminal::-webkit-scrollbar { width: 6px; }
+.terminal::-webkit-scrollbar-thumb { background: rgba(255,105,180,0.4); border-radius: 4px; }
+.terminal::-webkit-scrollbar-track { background: transparent; }
 
+.line { margin-bottom: 6px; white-space: pre-wrap; background: linear-gradient(90deg, #ff69b4, #ffb6c1); -webkit-background-clip: text; color: transparent; }
+.prompt::before { content: "user@heart:~$ "; background: linear-gradient(90deg, #ff69b4, #ffb6c1); -webkit-background-clip: text; color: transparent; }
+.cursor { display:inline-block; width:10px; }
+.cursor::after { content:"_"; animation: blink 1s infinite, typingPulse 1s infinite; background: linear-gradient(90deg, #ff69b4, #ffb6c1); -webkit-background-clip: text; color: transparent; }
+@keyframes blink { 0%,100% {opacity:0} 50% {opacity:1} }
+@keyframes typingPulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+.dim { color: #5cffc6; }
+.success { color: #ff69b4; font-weight: bold; }
+.warning { color: #ff1493; }
+.error { color: #ff4500; }
+.highlight { background: linear-gradient(90deg, #ff69b4, #ffb6c1); -webkit-background-clip: text; color: transparent; }
+.comment { color: #5cffc6; font-style: italic; }
+.final-block { margin-top: 15px; opacity: 0; transform: translateY(10px); transition: all 1.5s ease; }
+.final-block.show { opacity: 1; transform: translateY(0); }
+.heart { margin-top: 8px; background: linear-gradient(90deg, #ff69b4, #ffb6c1); -webkit-background-clip: text; color: transparent; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0% {opacity:0.5} 50% {opacity:1} 100% {opacity:0.5} }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="error-text" id="errorText">Fehler 143. That’s an error.</div>
-  <div class="error-text hidden" id="decodeText">Attempting automatic recovery...</div>
-  <div class="error-text hidden" id="codeText">Decoding error code: 143</div>
-  <div class="error-text hidden" id="hintText">Hint: This one is for you ❤️</div>
-  <div class="message" id="loveMessage">
-    Ich liebe dich so sehr!<br>
-    Mehr als Worte je ausdrücken könnten.<br>
-    💖💖💖
-  </div>
-</div>
-
-<div class="heart" id="heart"></div>
+<div id="background"></div>
+<div class="terminal" id="terminal"></div>
+<div class="terminal bg-terminal" id="bgTerminal"></div>
 
 <script>
-  const errorText = document.getElementById('errorText');
-  const decodeText = document.getElementById('decodeText');
-  const codeText = document.getElementById('codeText');
-  const hintText = document.getElementById('hintText');
-  const loveMessage = document.getElementById('loveMessage');
-  const heart = document.getElementById('heart');
+const terminal = document.getElementById('terminal');
+const targetName = "Emily";
 
-  // Schrittweise Textanimation
-  setTimeout(() => { errorText.classList.add('hidden'); decodeText.classList.remove('hidden'); }, 2000);
-  setTimeout(() => { decodeText.classList.add('hidden'); codeText.classList.remove('hidden'); }, 4000);
-  setTimeout(() => { codeText.classList.add('hidden'); hintText.classList.remove('hidden'); }, 6000);
-  setTimeout(() => { hintText.classList.add('hidden'); loveMessage.classList.add('show'); heart.classList.add('show'); generateParticles(); }, 8000);
+for(let i=0;i<40;i++){
+  const p = document.createElement('div');
+  p.classList.add('particle');
+  p.style.left = Math.random()*100+'%';
+  p.style.animationDuration = (4+Math.random()*4)+'s';
+  p.style.width = p.style.height = (3+Math.random()*5)+'px';
+  document.body.appendChild(p);
+}
 
-  // Herz-Partikel erzeugen
-  function generateParticles() {
-    for(let i=0;i<30;i++){
-      const p = document.createElement('div');
-      p.classList.add('particle');
-      p.style.left = (Math.random()*100)+'%';
-      p.style.animationDuration = (3+Math.random()*3)+'s';
-      p.style.width = (5+Math.random()*10)+'px';
-      p.style.height = p.style.width;
-      document.body.appendChild(p);
+const bgTerminal = document.getElementById('bgTerminal');
+const bgLogs = [
+  '[daemon] scanning modules...',
+  '[daemon] checking network...',
+  '[daemon] syncing memory banks...',
+  '[daemon] idle...',
+  '[daemon] heartbeat stable'
+];
+
+function startBgLogs(){
+  setInterval(()=>{
+    const line = document.createElement('div');
+    line.textContent = bgLogs[Math.floor(Math.random()*bgLogs.length)];
+    bgTerminal.appendChild(line);
+
+    // Nur die letzten 10 Zeilen behalten
+    if(bgTerminal.children.length > 10) bgTerminal.removeChild(bgTerminal.firstChild);
+  }, 1200);
+}
+startBgLogs();
+
+const commands = [
+  "Fehler 143. That’s an error.",
+  "ping heart.local",
+  "Reply from 127.0.0.1: bytes=32 time<1ms TTL=64",
+  "",
+  "sudo recover-system --force",
+{ type: 'password', prompt: 'Password: ' },
+  "[OK] restoring emotional modules...",
+  { type: 'comment', text: '// Thinking about Emily...' },
+  { type: 'typing-error', wrong: 'npm isntall love', correct: 'npm install love' },
+  "✔ installed 1 package: love@∞",
+  "",
+  "node decode.js --code 143",
+  "Parsing input...",
+  "Result: I love you",
+  "",
+  "chmod +x feelings.sh",
+  "./feelings.sh"
+];
+
+let lineIndex = 0;
+let charIndex = 0;
+let currentLine;
+
+function createLine() {
+  currentLine = document.createElement('div');
+  currentLine.classList.add('line', 'prompt');
+  const cursor = document.createElement('span');
+  cursor.classList.add('cursor');
+  currentLine.appendChild(cursor);
+  terminal.appendChild(currentLine);
+  adjustTerminalHeight();
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+function adjustTerminalHeight() {
+  const minHeight = 200;
+  const newHeight = terminal.scrollHeight + 20;
+  terminal.style.height = (newHeight < minHeight ? minHeight : newHeight) + 'px';
+}
+
+function type() {
+  if (lineIndex >= commands.length) { setTimeout(showFinal, 500); return; }
+
+  const current = commands[lineIndex];
+
+  if (typeof current === 'object') {
+    if(current.type==='typing-error') { simulateTypingError(current); return; }
+    else if(current.type==='comment'){ createLine(); currentLine.innerHTML=current.text+'<span class="cursor"></span>'; lineIndex++; currentLine=null; setTimeout(type,400); return; }
+    else if(current.type==='password'){ typePassword(current.prompt); return; }
+  }
+
+function typePassword(promptText) {
+  createLine('dim');
+  currentLine.textContent = promptText;
+  const cursor = document.createElement('span');
+  cursor.classList.add('cursor');
+  currentLine.appendChild(cursor);
+  
+  const password = '❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️'; // interner Wert, kann beliebig sein
+  let i = 0;
+  
+  function typeChar() {
+    if(i < password.length){
+      currentLine.textContent += '*';
+      currentLine.appendChild(cursor);
+      i++;
+      setTimeout(typeChar, 200);
+    } else {
+      lineIndex++;
+      currentLine = null;
+      setTimeout(type, 400);
     }
   }
+  typeChar();
+}
+
+  if (!currentLine) createLine();
+  const cursor = currentLine.querySelector('.cursor');
+
+  if (charIndex < current.length) {
+    currentLine.textContent = currentLine.textContent.replace('_','') + current.charAt(charIndex);
+    currentLine.appendChild(cursor);
+    charIndex++;
+    setTimeout(type, Math.random()*30 + 20);
+  } else {
+    charIndex = 0; lineIndex++; currentLine=null; setTimeout(type, 400 + Math.random()*300);
+  }
+}
+
+function simulateTypingError(cmd){
+  createLine(); let i=0;
+  const cursor = currentLine.querySelector('.cursor');
+  function typeWrong(){ if(i<cmd.wrong.length){ currentLine.textContent=currentLine.textContent.replace('_','')+cmd.wrong[i]; currentLine.appendChild(cursor); i++; setTimeout(typeWrong,30); } else { setTimeout(deleteWrong,400); } }
+  function deleteWrong(){ if(currentLine.textContent.length>4){ currentLine.textContent=currentLine.textContent.slice(0,-1); currentLine.appendChild(cursor); setTimeout(deleteWrong,25); } else { setTimeout(typeCorrect,200); } }
+  function typeCorrect(){ let j=4; function typeFix(){ if(j<cmd.correct.length){ currentLine.textContent=currentLine.textContent.replace('_','')+cmd.correct[j]; currentLine.appendChild(cursor); j++; setTimeout(typeFix,30); } else { lineIndex++; currentLine=null; setTimeout(type,500); } } typeFix(); }
+  typeWrong();
+}
+
+function showFinal(){
+  const steps=[
+    { text:`[${time()}] initializing emotional core...`, class:'dim'},
+    { text:`[${time()}] loading shared memories...`, class:'dim'},
+    { text:`[${time()}] compiling feelings.`, class:'dim', dots:true},
+    { text:`[${time()}] linking dependencies...`, class:'dim'},
+    { text:`[error] dependency '${targetName}' not found`, class:'error'},
+    { text:`[retry] searching again...`, class:'warning'},
+    { text:`[ok] dependency resolved: ${targetName} ❤️`, class:'success'}
+  ];
+
+  steps.forEach((step,i)=>{
+    setTimeout(()=>{
+      const line=document.createElement('div'); line.classList.add('line',step.class); line.textContent=step.text; terminal.appendChild(line); adjustTerminalHeight(); terminal.scrollTop = terminal.scrollHeight;
+      if(step.dots) animateDots(line);
+    },i*500);
+  });
+
+  const pauseTime=steps.length*500+1500;
+
+  setTimeout(()=>{
+    const execLine=document.createElement('div'); execLine.classList.add('line','dim'); execLine.textContent='[exec] starting love.exe'; terminal.appendChild(execLine); adjustTerminalHeight(); terminal.scrollTop=terminal.scrollHeight;
+  },pauseTime);
+
+  setTimeout(()=>{
+    const final=document.createElement('div'); final.classList.add('final-block'); terminal.appendChild(final);
+    const lines=[
+      '<div class="line success">✔ process completed without errors</div>',
+      '<div class="line comment">// final output</div>',
+      `<div class="line highlight">const target = "${targetName}";</div>`,
+      '<div class="line highlight">const feeling = "Ich liebe dich";</div>',
+      '<div class="line highlight">feeling > everything_else;</div>',
+    ];
+    lines.forEach((l,i)=>{ setTimeout(()=>{ final.innerHTML+=l; final.classList.add('show'); adjustTerminalHeight(); terminal.scrollTop=terminal.scrollHeight; }, i*400); });
+  }, pauseTime+800);
+}
+
+function animateDots(element){ let count=1; const base=element.textContent.replace(/\.+$/,''); const interval=setInterval(()=>{ count=(count%3)+1; element.textContent=base+'.'.repeat(count); },400); setTimeout(()=>clearInterval(interval),2000); }
+function time(){ const d=new Date(); return d.toLocaleTimeString('de-DE'); }
+
+type();
 </script>
 
 </body>
