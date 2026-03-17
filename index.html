@@ -49,24 +49,6 @@ body {
   z-index: 2;
 }
 
-.bg-terminal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  width: 90%;
-  max-width: 820px;
-  height: 80%;
-  background: rgba(0,0,0,0.3); /* leicht transparent */
-  border-radius: 10px;
-  padding: 20px;
-  overflow: hidden;
-  z-index: 1; /* unter dem Haupt-Terminal */
-  font-family: 'JetBrains Mono', monospace;
-  color: rgba(0,255,150,0.2);
-  font-size: 14px;
-}
-
 .terminal:hover .cursor::after {
   animation: blink 0.5s infinite, typingPulse 0.8s infinite;
 }
@@ -98,7 +80,6 @@ body {
 
 <div id="background"></div>
 <div class="terminal" id="terminal"></div>
-<div class="terminal bg-terminal" id="bgTerminal"></div>
 
 <script>
 const terminal = document.getElementById('terminal');
@@ -113,26 +94,44 @@ for(let i=0;i<40;i++){
   document.body.appendChild(p);
 }
 
-const bgTerminal = document.getElementById('bgTerminal');
 const bgLogs = [
-  '[daemon] scanning modules...',
-  '[daemon] checking network...',
-  '[daemon] syncing memory banks...',
-  '[daemon] idle...',
-  '[daemon] heartbeat stable'
+  '[❤️ daemon] heartbeat stable',
+  '[💌 daemon] scanning memories for Emily...',
+  '[🌸 daemon] syncing feelings...',
+  '[✨ daemon] optimizing romantic subroutines...',
+  '[💖 daemon] checking emotional modules...',
+  '[🌹 daemon] love packet received',
+  '[💞 daemon] dependency "Emily" detected',
+  '[💘 daemon] pulse at 98%',
+  '[💓 daemon] buffering happiness...',
+  '[💫 daemon] affection matrix stable'
 ];
 
-function startBgLogs(){
-  setInterval(()=>{
-    const line = document.createElement('div');
-    line.textContent = bgLogs[Math.floor(Math.random()*bgLogs.length)];
-    bgTerminal.appendChild(line);
+function spawnBgLog(){
+  const log = document.createElement('div');
+  log.textContent = bgLogs[Math.floor(Math.random()*bgLogs.length)];
+  log.style.position = 'absolute';
+  log.style.left = Math.random()*85 + 'vw';   
+  log.style.top = Math.random()*70 + 'vh';    
+  log.style.color = `rgba(255,105,180,${0.3 + Math.random()*0.3})`; // Alpha 0.3–0.6
+  log.style.fontFamily = "'JetBrains Mono', monospace";
+  log.style.fontSize = (16 + Math.random()*6) + 'px'; // größer
+  log.style.pointerEvents = 'none';
+  log.style.zIndex = 0;
+  log.style.textShadow = '0 0 4px rgba(255,105,180,0.5)'; // leichter Glow
+  document.body.appendChild(log);
 
-    // Nur die letzten 10 Zeilen behalten
-    if(bgTerminal.children.length > 10) bgTerminal.removeChild(bgTerminal.firstChild);
-  }, 1200);
+  const duration = 6000 + Math.random()*2000; // langsamer float
+  log.animate([
+    { transform: 'translateY(0)', opacity: parseFloat(log.style.color.split(',')[3]) },
+    { transform: 'translateY(-80px)', opacity: 0 }
+  ], { duration: duration, easing: 'linear' });
+
+  setTimeout(()=>{ log.remove(); }, duration);
 }
-startBgLogs();
+
+// Logs alle 1-2 Sekunden
+setInterval(spawnBgLog, 1200 + Math.random()*800);
 
 const commands = [
   "Fehler 143. That’s an error.",
